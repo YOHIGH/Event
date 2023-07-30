@@ -41,7 +41,9 @@ def success_page(request):
 
 @login_required
 def profile(request):
-    token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[-1]
+    # import pdb; pdb.set_trace()
+    # token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[-1]
+    token = request.GET['token']
     user_id = validate_jwt_token(token)
 
     if user_id is None:
@@ -49,8 +51,8 @@ def profile(request):
 
     return render(request, 'content/profile.html')
 
-def home(request):
-    return redirect('user/login')
+# def home(request):
+#     return redirect('user/login')
     # if request.user.is_superuser:
     #     return redirect('/admin')
     # if request.user.is_authenticated:

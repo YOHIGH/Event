@@ -23,7 +23,7 @@ from userapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('userapp.urls')),
-    path('',views.home, name='home'),
+    # path('',views.home, name='home'),
 ]
 
 if settings.DEBUG:

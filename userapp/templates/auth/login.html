@@ -83,7 +83,8 @@
               success: function (data) {
                 const token = data.token;
                 localStorage.setItem("token", token);
-                window.location.href = "/user/profile/";
+                const encodedToken = encodeURIComponent(token);
+                window.location.href = "/user/profile/?token=" + encodedToken;
               },
               error: function (xhr, status, error) {
                 console.error("Login failed:", xhr.responseText);
