@@ -119,29 +119,9 @@
             <strong>State</strong>
             <input type="text" name="state" value="{{ request.user.state|default:"N/A" }}">
           </div>
-          <div class="mb-3 fields">
-            <strong>State</strong>
-              <input type="range" class="form-range" id="range" min="0" max="100" step="2" onchange="change();">
-            <span id="min"></span>
-            <span id="range_value"></span>
-            <span id="max"></span>
-          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<script>
-function initial(){
-debugger;
-$('#range_value').text($('#range').val());
-$('#max').text($('#range').attr('max'));
-$('#min').text($('#range').attr('min'));
-}
-debugger;
-initial();
-function change(){
-$('#range_value').text($('#range').val())
-}
-</script>
 {% endblock %}
