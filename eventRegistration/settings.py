@@ -151,7 +151,7 @@ STATIC_URL = '/static/'
 # Absolute filesystem path to the directory where static files will be collected.
 STATIC_ROOT = 'staticfiles'
 
-LOGIN_REDIRECT_URL = 'profile'
+LOGIN_REDIRECT_URL = '/user/profile'
 LOGIN_URL = '/user/login/'
 
 

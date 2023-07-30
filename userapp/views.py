@@ -19,6 +19,7 @@ def register_user(request):
     return render(request, 'auth/register.html', {'form': form})
 
 def login_user(request):
+    import pdb; pdb.set_trace()
     if request.method == 'POST':
         data = json.loads(request.body)
         username = data.get('username')
@@ -49,8 +50,8 @@ def profile(request):
     return render(request, 'content/profile.html')
 
 def home(request):
+    return redirect('user/login')
     # if request.user.is_superuser:
     #     return redirect('/admin')
-    if request.user.is_authenticated:
-        return redirect('user/profile')
-    return redirect('user/login')
+    # if request.user.is_authenticated:
+        # return redirect('user/profile')
