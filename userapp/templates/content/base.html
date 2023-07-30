@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block title %}
+    <title>Event Website</title>
+  {% endblock %}
+
+  <!-- Link Bootstrap CSS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .navbar-brand {
+      /* Remove padding and border-radius to make "Event" look like a brand name */
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .brand-text {
+      font-size: 1.5rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      /* Set the colors for the "Event" text */
+      color: #ff6b6b;
+      background-color: transparent; /* No background color */
+      /* Adding transition for smoother effect */
+      transition: color 0.3s ease;
+    }
+
+    /* Invert the colors on hover using the "invert" filter */
+    .navbar-brand:hover .brand-text {
+      color: #f1f1f1;
+    }
+    .navbar-nav .nav-item {
+      margin-right: 20px; /* Add some space between the navigation items */
+    }
+
+    /* Style for the navigation links */
+    .navbar-nav .nav-link {
+      font-size: 1rem;
+      /* Set the colors for the navigation links */
+      color: #f1f1f1; /* Default text color */
+      transition: color 0.3s ease; /* Adding transition for smoother effect */
+    }
+
+    /* Invert the colors on hover for the navigation links */
+    .navbar-nav .nav-link:hover {
+      color: #ff6b6b; /* Hover text color using your color scheme */
+    }
+
+    /* Active link style */
+    .navbar-nav .nav-link.active {
+      color: #ff6b6b; /* Active text color using your color scheme */
+      font-weight: bold; /* Make the active link bold */
+    }
+
+    .profile-icon img {
+      width: 40px;
+      height: 40px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 16px 32px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      border-radius: 50%;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      /* Set a light background color to improve visibility of the profile picture */
+      background-color: #f1f1f1;
+      /* Center the image within the circular container */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* Add a transparent border initially */
+      border: 2px solid transparent;
+    }
+
+    /* Optional CSS to make the profile picture pop out when hovered */
+    .profile-icon img:hover {
+      transform: translateY(-4px) scale(1.1);
+      border-color: #ff6b6b;
+      background-color: #ff6b6b;
+    }
+    {% block style %}
+    {% endblock %}
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <!-- Add a <span> element to style the "Event" text differently -->
+        <span class="brand-text">Event</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Interested</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Registered</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">FAQ</a>
+          </li>
+        </ul>
+        <div class="profile-icon ms-auto">
+          <!-- Use the Django template variable 'photo_url' as the 'src' attribute of the image -->
+          <a href="{% url 'profile' %}"> <!-- Replace 'user_profile' with your profile page URL -->
+            <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="Profile">
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  {% block content %}
+  {% endblock %}
+  <!-- Link Bootstrap JS and Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

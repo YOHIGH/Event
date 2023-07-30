@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom styles for the user registration form */
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* Customize the button style */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-primary:focus,
+        .btn-primary.focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+        }
+
+        /* Custom styles for aligning labels and inputs */
+        .block {
+            margin-bottom: 15px;
+        }
+
+        .block label {
+            display: inline-block;
+            width: 140px;
+            text-align: right;
+        }
+
+        .block input {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="text-center">User Registration</h1>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% if form.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>Error(s):</strong>
+                                    <ul>
+                                        {% for field_errors in form.errors %}
+                                            <li>{{ field_errors }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                            <div class="block">
+                                <label for="{{ form.username.id_for_label }}">Username</label>
+                                {{ form.username }}
+                            </div>
+                            <div class="block">
+                                <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                                {{ form.first_name }}
+                            </div>
+                            <div class="block">
+                                <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                                {{ form.last_name }}
+                            </div>
+                            <div class="block">
+                                <label for="{{ form.email.id_for_label }}">Email</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="block">
+                                <label for="{{ form.password.id_for_label }}">Password</label>
+                                {{ form.password }}
+                            </div>
+                            <div class="block">
+                                <label for="{{ form.phone_number.id_for_label }}">Phone Number</label>
+                                {{ form.phone_number }}
+                            </div>
+                            <div class="block">
+                                <label for="{{ form.address.id_for_label }}">Address</label>
+                                {{ form.address }}
+                            </div>
+                            <div class="block">
+                                <label for="{{ form.photo.id_for_label }}">Photo</label>
+                                {{ form.photo }}
+                            </div>
+                            <div class="block">
+                                <label for="{{ form.date_of_birth.id_for_label }}">Date of Birth</label>
+                                {{ form.date_of_birth }}
+                            </div>
+                            <div class="block">
+                                <label for="{{ form.gender.id_for_label }}">Gender</label>
+                                {{ form.gender }}
+                            </div>
+                            <div class="block">
+                                <label for="{{ form.country.id_for_label }}">Country</label>
+                                {{ form.country }}
+                            </div>
+                            <div class="block">
+                                <label for="{{ form.city.id_for_label }}">City</label>
+                                {{ form.city }}
+                            </div>
+                            <div class="block">
+                                <label for="{{ form.state.id_for_label }}">State</label>
+                                {{ form.state }}
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS (Optional, required for some Bootstrap components) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

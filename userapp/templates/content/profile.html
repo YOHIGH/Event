@@ -1,0 +1,147 @@
+{% extends "content/base.html" %}
+
+{% block title %}
+  <title>Profile Details - Event Website</title>
+{% endblock %}
+
+{% block style %}
+<style>
+  body {
+    background-color: white;
+    color: #ff6b6b;
+  }
+
+  .card {
+    background-color: #f1f1f1;
+    border: none; /* Remove the default border */
+    border-radius: 10px; /* Add a border radius to create a curved effect */
+    box-shadow: 0 0 10px rgba(87, 66, 64, 0.6); /* Add a box shadow to create a 3D effect */
+  }
+
+  .text-primary {
+    color: #ff6b6b;
+  }
+
+  .rounded-square {
+    border: 2px solid #574240; /* Add a 2px solid border to the circular profile picture */
+  }
+
+  /* Additional styles for a modern look */
+  .card-title {
+    color: #574240;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .card-body {
+    padding: 20px;
+  }
+
+  .mb-3 {
+    margin-bottom: 15px;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="date"],
+  select {
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    width: 100%;
+    color: #574240;
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="date"]:focus,
+  select:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(87, 66, 64, 0.8);
+  }
+
+  /* Style for the gender label */
+  .gender-label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  .fields {
+    text-align: left !important;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card bg-light">
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ request.user.first_name }} {{ request.user.last_name }}</h5>
+          <div class="text-center mb-3">
+            <img src="{{ request.user.photo.url }}" class="rounded-square" alt="Profile Picture" style="width: 150px; height: 150px;">
+          </div>
+          <div class="mb-3 fields">
+            <strong>Email</strong>
+            <input type="email" name="email" value="{{ request.user.email }}" disabled>
+          </div>
+          <div class="mb-3 fields">
+            <strong>Phone Number</strong>
+            <input type="text" name="phone_number" value="{{ request.user.phone_number|default:'N/A' }}">
+          </div>
+          <div class="mb-3 fields">
+            <strong>Address</strong>
+            <input type="text" name="address" value="{{ request.user.address|default:'N/A' }}">
+          </div>
+          <div class="mb-3 fields">
+            <strong>Date of Birth:</strong>
+            <input type="date" name="date_of_birth" min="1990-01-01" max="2022-12-30">
+          </div>
+          <div class="mb-3 fields">
+            <label class="gender-label"><strong>Gender:</strong></label>
+            <select name="gender">
+              {% for choice in user.GENDER_CHOICES %}
+                <option value="{{ choice.0 }}" {% if choice.0 == request.user.gender %} selected {% endif %}>
+                  {{ choice.1 }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3 fields">
+            <strong>Country</strong>
+            <input type="text" id="country" name="country" value="{{ request.user.country|default:"N/A" }}">
+          </div>
+          <div class="mb-3 fields">
+            <strong>City</strong>
+            <input type="text" name="city" value="{{ request.user.city|default:"N/A" }}">
+          </div>
+          <div class="mb-3 fields">
+            <strong>State</strong>
+            <input type="text" name="state" value="{{ request.user.state|default:"N/A" }}">
+          </div>
+          <div class="mb-3 fields">
+            <strong>State</strong>
+              <input type="range" class="form-range" id="range" min="0" max="100" step="2" onchange="change();">
+            <span id="min"></span>
+            <span id="range_value"></span>
+            <span id="max"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function initial(){
+debugger;
+$('#range_value').text($('#range').val());
+$('#max').text($('#range').attr('max'));
+$('#min').text($('#range').attr('min'));
+}
+debugger;
+initial();
+function change(){
+$('#range_value').text($('#range').val())
+}
+</script>
+{% endblock %}
