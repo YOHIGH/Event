@@ -70,7 +70,6 @@
           formData.forEach((item) => {
             jsonData[item.name] = item.value;
           });
-          debugger;
           try {
             $.ajax({
               type: "POST",
@@ -81,10 +80,7 @@
                 "X-CSRFToken": $("input[name=csrfmiddlewaretoken]").val(),
               },
               success: function (data) {
-                const token = data.token;
-                localStorage.setItem("token", token);
-                const encodedToken = encodeURIComponent(token);
-                window.location.href = "/user/profile/?token=" + encodedToken;
+                window.location.href = "/user/profile/";
               },
               error: function (xhr, status, error) {
                 console.error("Login failed:", xhr.responseText);

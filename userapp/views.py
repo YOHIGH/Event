@@ -19,7 +19,6 @@ def register_user(request):
     return render(request, 'auth/register.html', {'form': form})
 
 def login_user(request):
-    import pdb; pdb.set_trace()
     if request.method == 'POST':
         data = json.loads(request.body)
         username = data.get('username')
@@ -30,6 +29,7 @@ def login_user(request):
         if user is not None:
             login(request, user)
             token = generate_jwt_token(user.id)
+            request.session['jwt_token'] = token
             return JsonResponse({'token': token})
         else:
             return JsonResponse({'error': 'Invalid credentials'}, status=400)
@@ -41,19 +41,15 @@ def success_page(request):
 
 @login_required
 def profile(request):
-    # import pdb; pdb.set_trace()
-    # token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[-1]
-    token = request.GET['token']
-    user_id = validate_jwt_token(token)
+    jwt_token = request.session.get('jwt_token', None)
+    user_id = validate_jwt_token(jwt_token)
 
     if user_id is None:
         return JsonResponse({'error': 'Invalid or expired token'}, status=401)
 
     return render(request, 'content/profile.html')
 
-# def home(request):
-#     return redirect('user/login')
-    # if request.user.is_superuser:
-    #     return redirect('/admin')
-    # if request.user.is_authenticated:
-        # return redirect('user/profile')
+def home(request):
+    if request.user.is_authenticated:
+        return redirect('user/profile')
+    return redirect('user/login')
