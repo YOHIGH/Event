@@ -134,6 +134,35 @@
                                 <label for="{{ form.state.id_for_label }}">State</label>
                                 {{ form.state }}
                             </div>
+                            <div class="block">
+                                <label>User Type</label>
+                                <select id="id_organization" name="organization">
+                                    <option value="user">User</option>
+                                    <option value="organizer">Organizer</option>
+                                </select>
+                            </div>
+                            <div id="organizer-fields" style="display: none;">
+                                <div class="block">
+                                    <label for="{{ form.organization_name.id_for_label }}">Organization Name</label>
+                                    {{ form.organization_name }}
+                                </div>
+                                <div class="block">
+                                    <label for="{{ form.organization_description.id_for_label }}">Organization Description</label>
+                                    {{ form.organization_description }}
+                                </div>
+                                <div class="block">
+                                    <label for="{{ form.organization_address.id_for_label }}">Organization Address</label>
+                                    {{ form.organization_address }}
+                                </div>
+                                <div class="block">
+                                    <label for="{{ form.organization_logo.id_for_label }}">Organization Logo</label>
+                                    {{ form.organization_logo }}
+                                </div>
+                                <div class="block">
+                                    <label for="{{ form.organization_type.id_for_label }}">Organization Type</label>
+                                    {{ form.organization_type }}
+                                </div>
+                            </div>
                             <button type="submit" class="btn btn-primary btn-block">Register</button>
                             <br>
                             <p style="text-align: center;">Already have Account? <a href="/user/login" class="btn btn-primary">Login</a></p>
@@ -148,5 +177,23 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function () {
+    function toggleOrganizerFields() {
+        const organizerFields = $('#organizer-fields');
+        const organization = $('#id_organization').val();
+
+        if (organization === 'organizer') {
+            organizerFields.show();
+        } else {
+            organizerFields.hide();
+        }
+    }
+    toggleOrganizerFields();
+    $('#id_organization').on('change', function () {
+        toggleOrganizerFields();
+    });
+});
+</script>
 </body>
 </html>

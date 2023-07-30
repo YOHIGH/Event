@@ -1,17 +1,29 @@
 from django import forms
 from .models import CustomUser
 from django.utils import timezone
-from django.forms.widgets import DateInput
+from django.forms.widgets import DateInput, PasswordInput
 import os
+from organizer.models import Organizer
+from ckeditor.widgets import CKEditorWidget
 
 
 class UserRegistrationForm(forms.ModelForm):
+    organization = forms.ChoiceField(choices=[('user', 'User'), ('organizer', 'Organizer')])
+
+    # Organizer fields
+    organization_name = forms.CharField(max_length=100, required=False)
+    organization_description = forms.CharField(widget=CKEditorWidget(), required=False)
+    organization_logo = forms.ImageField(required=False)
+    organization_address = forms.CharField(widget=forms.Textarea, required=False)
+    organization_type = forms.CharField(max_length=20, required=False)
+
     class Meta:
         model = CustomUser
         fields = ['username', 'first_name', 'last_name', 'email', 'password', 'phone_number', 'address', 'photo', 'date_of_birth', 'gender',
                   'country', 'city', 'state']
         widgets = {
             'date_of_birth': DateInput(attrs={'type': 'date'}),  # Set the widget for date_of_birth field to DateInput
+            'password': PasswordInput(),
         }
 
     def clean_phone_number(self):
@@ -43,3 +55,21 @@ class UserRegistrationForm(forms.ModelForm):
                 raise forms.ValidationError('Please upload a valid photo in JPEG, JPG, or PNG format.')
 
         return photo
+
+    def save(self, *args, **kwargs):
+        organization = self.cleaned_data.get('organization')
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        if organization == 'organizer':
+            user.save()
+            organizer = Organizer(user=user)
+            organizer.organization_name = self.cleaned_data['organization_name']
+            organizer.organization_description = self.cleaned_data['organization_description']
+            organizer.organization_logo = self.cleaned_data['organization_logo']
+            organizer.organization_address = self.cleaned_data['organization_address']
+            organizer.organization_type = self.cleaned_data['organization_type']
+            organizer.save()
+        else:
+            user.save()
+
+        return user

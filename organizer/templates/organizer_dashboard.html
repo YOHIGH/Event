@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Organizer Dashboard - Event Website</title>
+  <style>
+    /* Add the CSS styles for the Organizer Dashboard */
+    body {
+      background-color: #f1f1f1;
+      color: #574240;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #ff6b6b;
+      text-align: center;
+    }
+
+    h2 {
+      color: #574240;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    p {
+      margin-bottom: 10px;
+    }
+
+    img {
+      max-width: 200px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .no-logo {
+      text-align: center;
+      color: #ff6b6b;
+    }
+  </style>
+</head>
+<body>
+  {% if organizer %}
+    <header>
+      <h1>Welcome to the Organizer Dashboard</h1>
+    </header>
+    <div class="container">
+      <h2>Organization Name: {{ organizer.organization_name }}</h2>
+      <p>Organization Description: {{ organizer.description }}</p>
+      {% if organizer.logo %}
+        <img src="{{ organizer.logo.url }}" alt="Organization Logo">
+      {% else %}
+        <p class="no-logo">No logo available</p>
+      {% endif %}
+      <p>Address: {{ organizer.address }}</p>
+      <p>Organization Type: {{ organizer.organization_type }}</p>
+    </div>
+  {% else %}
+    <div class="container">
+      <p>No organizer found for this user.</p>
+    </div>
+  {% endif %}
+</body>
+</html>

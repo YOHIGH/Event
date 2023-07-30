@@ -109,15 +109,15 @@
           </div>
           <div class="mb-3 fields">
             <strong>Country</strong>
-            <input type="text" id="country" name="country" value="{{ request.user.country|default:"N/A" }}">
+            <input type="text" id="country" name="country" value="{{ request.user.country|default:'N/A' }}">
           </div>
           <div class="mb-3 fields">
             <strong>City</strong>
-            <input type="text" name="city" value="{{ request.user.city|default:"N/A" }}">
+            <input type="text" name="city" value="{{ request.user.city|default:'N/A' }}">
           </div>
           <div class="mb-3 fields">
             <strong>State</strong>
-            <input type="text" name="state" value="{{ request.user.state|default:"N/A" }}">
+            <input type="text" name="state" value="{{ request.user.state|default:'N/A' }}">
           </div>
         </div>
       </div>

@@ -38,4 +38,6 @@ class CustomUser(AbstractUser):
                 self.photo = 'default_female.png'
             else:
                 self.photo = 'default_other.png'
+        elif not self.gender:
+            self.photo = 'default_other.png'
         super().save(*args, **kwargs)
