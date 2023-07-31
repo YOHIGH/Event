@@ -1,70 +1,84 @@
-<!DOCTYPE html>
 <html>
 <head>
     <title>User Registration</title>
     <!-- Add Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        /* Custom styles for the user registration form */
         body {
-            background-color: #f0f0f0;
+            background-color: #f5f5f5;
             font-family: Arial, sans-serif;
         }
 
         .container {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            min-height: 100vh;
         }
 
         .card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .card-header {
-            background-color: #007bff;
+            background-color: #ff6b6b;
             color: #fff;
-            border-bottom: 1px solid #e0e0e0;
+            border-radius: 15px 15px 0 0;
         }
 
-        /* Customize the button style */
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-control {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #fff;
+            color: #333;
+        }
+
         .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: #ff6b6b;
+            border-color: #ff6b6b;
         }
 
         .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
+            background-color: #e04e4e;
+            border-color: #e04e4e;
         }
 
         .btn-primary:focus,
         .btn-primary.focus {
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.5);
         }
 
-        /* Custom styles for aligning labels and inputs */
         .block {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .block label {
-            display: inline-block;
-            width: 140px;
-            text-align: right;
+            font-weight: bold;
         }
 
-        .block input {
-            width: 300px;
+        .block input,
+        .block select {
+            width: 100%;
+        }
+
+        .block select {
+            padding: 10px;
+        }
+
+        .block .btn {
+            width: 100%;
         }
     </style>
 </head>
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h1 class="text-center">User Registration</h1>
@@ -165,7 +179,7 @@
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Register</button>
                             <br>
-                            <p style="text-align: center;">Already have Account? <a href="/user/login" class="btn btn-primary">Login</a></p>
+                            <p style="text-align: center;">Already have an account? <a href="/user/login" class="btn btn-primary">Login</a></p>
                         </form>
                     </div>
                 </div>
@@ -173,27 +187,27 @@
         </div>
     </div>
 
-    <!-- Add Bootstrap JS (Optional, required for some Bootstrap components) -->
+   <!-- Add Bootstrap JS (Optional, required for some Bootstrap components) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-$(document).ready(function () {
-    function toggleOrganizerFields() {
-        const organizerFields = $('#organizer-fields');
-        const organization = $('#id_organization').val();
+    <script>
+    $(document).ready(function () {
+        function toggleOrganizerFields() {
+            const organizerFields = $('#organizer-fields');
+            const organization = $('#id_organization').val();
 
-        if (organization === 'organizer') {
-            organizerFields.show();
-        } else {
-            organizerFields.hide();
+            if (organization === 'organizer') {
+                organizerFields.show();
+            } else {
+                organizerFields.hide();
+            }
         }
-    }
-    toggleOrganizerFields();
-    $('#id_organization').on('change', function () {
         toggleOrganizerFields();
+        $('#id_organization').on('change', function () {
+            toggleOrganizerFields();
+        });
     });
-});
-</script>
+    </script>
 </body>
 </html>

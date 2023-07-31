@@ -1,20 +1,75 @@
-<!DOCTYPE html>
-<html>
+  <!DOCTYPE html>
+  <html lang="en">
   <head>
     <title>Login Page</title>
     <!-- Add Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+      /* Custom CSS styles */
+      body {
+        background-color: #f1f1f1;
+        color: #574240;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        margin-top: 50px;
+      }
+
+      .card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+      }
+
+      .btn-primary {
+        background-color: #ff6b6b;
+        border-color: #ff6b6b;
+        color: #fff; /* White text */
+      }
+
+      .btn-primary:hover {
+        background-color: #fff;
+        border-color: #ff6b6b;
+        color: #ff6b6b; /* #ff6b6b text on hover */
+      }
+
+      .btn-register {
+        background-color: #ff6b6b;
+        border-color: #ff6b6b;
+        color: #fff; /* White text */
+      }
+
+      .btn-register:hover {
+        background-color: #fff;
+        border-color: #ff6b6b;
+        color: #ff6b6b; /* #ff6b6b text on hover */
+      }
+
+      .card-header {
+        background-color: #ff6b6b;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+        margin-bottom: 20px;
+        border-radius: 10px 10px 0 0;
+      }
+
+      .form-group label {
+        color: #574240;
+      }
+    </style>
   </head>
   <body>
-    <div class="container mt-5">
+    <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-6">
           <div class="card">
             <div class="card-header">
-              <h1 class="text-center">Login Page</h1>
+              <h1>Login Page</h1>
             </div>
             <div class="card-body">
               <form id="login-form" method="post">
@@ -46,7 +101,7 @@
             </div>
             <p style="text-align: center">
               Not a member?
-              <a href="/user/register" class="btn btn-primary">Register</a>
+              <a href="/user/register" class="btn btn-register">Register</a>
             </p>
           </div>
         </div>
@@ -93,4 +148,4 @@
       });
     </script>
   </body>
-</html>
+  </html>

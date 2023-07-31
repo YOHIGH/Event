@@ -7,6 +7,17 @@
     body {
       background-color: #f1f1f1;
       color: #574240;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #ff6b6b;
+      color: #fff;
+      text-align: center;
+      padding: 5px 0;
+      margin-bottom: 20px;
     }
 
     .container {
@@ -15,31 +26,56 @@
       padding: 20px;
     }
 
-    h1 {
-      color: #ff6b6b;
+    .card {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      max-width: 200px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 5px;
+    }
+
+    .no-logo {
       text-align: center;
+      color: #ff6b6b;
+    }
+
+    .tag {
+      display: inline-block;
+      background-color: #ff6b6b;
+      color: #fff;
+      font-size: 14px;
+      padding: 5px 10px;
+      border-radius: 15px;
+      margin-right: 5px;
+    }
+
+    .dark-creamywhite {
+      background-color: #f9f9f6;
+      color: #574240;
     }
 
     h2 {
       color: #574240;
       font-size: 24px;
       font-weight: bold;
+      margin-top: 0;
     }
 
     p {
       margin-bottom: 10px;
-    }
-
-    img {
-      max-width: 200px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
-
-    .no-logo {
-      text-align: center;
-      color: #ff6b6b;
     }
   </style>
 </head>
@@ -49,15 +85,13 @@
       <h1>Welcome to the Organizer Dashboard</h1>
     </header>
     <div class="container">
-      <h2>Organization Name: {{ organizer.organization_name }}</h2>
-      <p>Organization Description: {{ organizer.description }}</p>
-      {% if organizer.logo %}
-        <img src="{{ organizer.logo.url }}" alt="Organization Logo">
-      {% else %}
-        <p class="no-logo">No logo available</p>
-      {% endif %}
-      <p>Address: {{ organizer.address }}</p>
-      <p>Organization Type: {{ organizer.organization_type }}</p>
+      <div class="card">
+        <img src="{% if organizer.logo %}{{ organizer.logo.url }}{% else %}https://via.placeholder.com/200{% endif %}" alt="Organization Logo">
+        <h2>{{ organizer.organization_name }}</h2>
+        {{ organizer.description | safe }}
+        <p>Address: {{ organizer.address }}</p>
+        <div class="tag light-creamywhite">{{ organizer.organization_type }}</div>
+      </div>
     </div>
   {% else %}
     <div class="container">

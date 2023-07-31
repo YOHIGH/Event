@@ -23,12 +23,8 @@ from userapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('userapp.urls')),
-<<<<<<< Updated upstream
-    path('',views.home, name='home'),
-=======
     path('', include('organizer.urls')),
-    # path('',views.home, name='home'),
->>>>>>> Stashed changes
+    path('', views.home, name='home'),
 ]
 
 if settings.DEBUG:

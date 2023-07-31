@@ -24,7 +24,6 @@ def login_user(request):
         data = json.loads(request.body)
         username = data.get('username')
         password = data.get('password')
-
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
@@ -44,18 +43,14 @@ def success_page(request):
 
 @login_required
 def profile(request):
-<<<<<<< Updated upstream
     jwt_token = request.session.get('jwt_token', None)
     user_id = validate_jwt_token(jwt_token)
-=======
-    token = request.GET['token']
-    user_id = validate_jwt_token(token)
->>>>>>> Stashed changes
 
     if user_id is None:
         return JsonResponse({'error': 'Invalid or expired token'}, status=401)
 
     return render(request, 'content/profile.html')
+
 
 def home(request):
     if request.user.is_authenticated:
