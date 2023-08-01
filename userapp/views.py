@@ -5,6 +5,9 @@ from django.contrib.auth import login, authenticate
 from .utils import generate_jwt_token, validate_jwt_token
 from django.http import JsonResponse
 import json
+import logging
+
+logger = logging.getLogger('root')
 
 
 def register_user(request):
@@ -20,6 +23,7 @@ def register_user(request):
 
 
 def login_user(request):
+    logger.info(f"User_logged_in: {request}")
     if request.method == 'POST':
         data = json.loads(request.body)
         username = data.get('username')
