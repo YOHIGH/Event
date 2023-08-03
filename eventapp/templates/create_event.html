@@ -1,0 +1,69 @@
+{% extends 'content/base.html' %}
+
+{% block title %}
+  <title>Create Event - Event Website</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="card border-0 rounded-lg shadow-lg">
+      <div class="card-header text-center bg-primary text-white">
+        <h1>Create Event</h1>
+      </div>
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="title" class="form-label">Event Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="start_date" class="form-label">Start Date and Time</label>
+            <input type="datetime-local" class="form-control" id="start_date" name="start_date" required>
+          </div>
+          <div class="mb-3">
+            <label for="end_date" class="form-label">End Date and Time</label>
+            <input type="datetime-local" class="form-control" id="end_date" name="end_date" required>
+          </div>
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <textarea class="form-control" id="location" name="location" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="capacity" class="form-label">Capacity</label>
+            <input type="number" class="form-control" id="capacity" name="capacity" required>
+          </div>
+          <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" step="0.01" class="form-control" id="price" name="price">
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="is_paid_event" name="is_paid_event">
+            <label class="form-check-label" for="is_paid_event">Is Paid Event</label>
+          </div>
+          <div class="mb-3">
+            <label for="discount" class="form-label">Discount (in percentage)</label>
+            <input type="number" step="0.01" class="form-control" id="discount" name="discount">
+          </div>
+          <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-control" id="category" name="category">
+              <option value="">Select a category</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="organizer" class="form-label">Organizer</label>
+            <select class="form-control" id="organizer" name="organizer" disabled>
+              <option value="{{ user.id }}">{{ user.username }}</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-3d">Create Event</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -23,6 +23,7 @@ from userapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('userapp.urls')),
+    path('event/', include('eventapp.urls')),
     path('', include('organizer.urls')),
     path('', views.home, name='home'),
 ]

@@ -3,7 +3,7 @@ from organizer.models import Organizer
 from ckeditor.fields import RichTextField
 from userapp.models import CustomUser
 from django.core.validators import MinValueValidator, MaxValueValidator
-from datetime import datetime
+from django.utils import timezone
 
 
 class Category(models.Model):
@@ -33,7 +33,7 @@ class Event(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        now = datetime.now()
+        now = timezone.now()
         if self.start_date.date() <= now.date() or self.end_date.date() <= now.date():
             raise ValueError("Start date and end date should be greater than today's date.")
         if self.end_date <= self.start_date:
@@ -42,7 +42,7 @@ class Event(models.Model):
         super().save(*args, **kwargs)
 
     def time_left_to_start(self):
-        now = datetime.now()
+        now = timezone.now()
         if self.start_date < now:
             return {
                 'days': 0,
@@ -66,7 +66,7 @@ class Event(models.Model):
         }
 
     def event_duration(self):
-        now = datetime.now()
+        now = timezone.now()
         if self.end_date < now:
             return {
                 'days': 0,

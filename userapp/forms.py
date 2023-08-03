@@ -60,16 +60,14 @@ class UserRegistrationForm(forms.ModelForm):
         organization = self.cleaned_data.get('organization')
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password'])
+        user.save()
         if organization == 'organizer':
-            user.save()
             organizer = Organizer(user=user)
             organizer.organization_name = self.cleaned_data['organization_name']
-            organizer.organization_description = self.cleaned_data['organization_description']
-            organizer.organization_logo = self.cleaned_data['organization_logo']
-            organizer.organization_address = self.cleaned_data['organization_address']
+            organizer.description = self.cleaned_data['organization_description']
+            organizer.logo = self.cleaned_data['organization_logo']
+            organizer.address = self.cleaned_data['organization_address']
             organizer.organization_type = self.cleaned_data['organization_type']
             organizer.save()
-        else:
-            user.save()
 
         return user

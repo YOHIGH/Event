@@ -1,96 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends 'content/base.html' %}
+
+{% block title %}
   <title>Organizer Dashboard - Event Website</title>
+{% endblock %}
+{% block style %}
   <style>
-    /* Add the CSS styles for the Organizer Dashboard */
-    body {
-      background-color: #f1f1f1;
-      color: #574240;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
+    /* Custom CSS for the 3D button effect */
+    .btn-3d {
+      display: inline-block;
+      font-size: 24px;
+      padding: 20px 40px;
+      border: 2px solid transparent;
+      border-radius: 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 16px 32px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s, color 0.3s;
+      color: black;
+      background-color: antiquewhite;
+      border: none;
     }
 
-    header {
-      background-color: #ff6b6b;
-      color: #fff;
-      text-align: center;
-      padding: 5px 0;
-      margin-bottom: 20px;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .card {
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      margin-bottom: 20px;
-      transition: transform 0.3s;
-    }
-
-    .card:hover {
+    .btn-3d:hover {
       transform: translateY(-4px);
-    }
-
-    .card img {
-      max-width: 200px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-      border-radius: 5px;
-    }
-
-    .no-logo {
-      text-align: center;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 24px 48px rgba(0, 0, 0, 0.2);
+      background-color: #fff;
       color: #ff6b6b;
     }
-
-    .tag {
-      display: inline-block;
-      background-color: #ff6b6b;
-      color: #fff;
-      font-size: 14px;
-      padding: 5px 10px;
-      border-radius: 15px;
-      margin-right: 5px;
-    }
-
-    .dark-creamywhite {
-      background-color: #f9f9f6;
-      color: #574240;
-    }
-
-    h2 {
-      color: #574240;
-      font-size: 24px;
-      font-weight: bold;
-      margin-top: 0;
-    }
-
-    p {
-      margin-bottom: 10px;
-    }
   </style>
-</head>
-<body>
+{% endblock %}
+{% block content %}
   {% if organizer %}
-    <header>
-      <h1>Welcome to the Organizer Dashboard</h1>
-    </header>
-    <div class="container">
-      <div class="card">
-        <img src="{% if organizer.logo %}{{ organizer.logo.url }}{% else %}https://via.placeholder.com/200{% endif %}" alt="Organization Logo">
-        <h2>{{ organizer.organization_name }}</h2>
-        {{ organizer.description | safe }}
-        <p>Address: {{ organizer.address }}</p>
-        <div class="tag light-creamywhite">{{ organizer.organization_type }}</div>
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+      <div class="card border-0 rounded-lg shadow-lg" style="margin-top: -50px;">
+        <div class="card-header text-center">
+          <h1>Welcome to the Organizer Dashboard</h1>
+        </div>
+        <img src="{% if organizer.logo %}{{ organizer.logo.url }}{% else %}https://via.placeholder.com/200{% endif %}" alt="Organization Logo" class="card-img-top img-fluid rounded-lg" style="max-height: 300px;">
+        <div class="card-body">
+          <h2 class="text-center">{{ organizer.organization_name }}</h2>
+          {{ organizer.description | safe }}
+          <p class="text-center">Address: {{ organizer.address }}</p>
+          <div class="tag text-center rounded-pill">{{ organizer.organization_type }}</div>
+          <div class="text-center mt-3">
+            <a href="{% url 'create_event' %}" class="btn btn-lg btn-3d">Create Event</a>
+          </div>
+        </div>
       </div>
     </div>
   {% else %}
@@ -98,5 +52,4 @@
       <p>No organizer found for this user.</p>
     </div>
   {% endif %}
-</body>
-</html>
+{% endblock %}

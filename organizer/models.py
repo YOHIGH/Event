@@ -4,7 +4,7 @@ from ckeditor.fields import RichTextField
 
 
 class Organizer(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="organizer")
     organization_name = models.CharField(max_length=100)
     description = RichTextField()
     logo = models.ImageField(upload_to='organizer_logos/', blank=True, null=True)

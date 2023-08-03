@@ -79,6 +79,50 @@
       border-color: #ff6b6b;
       background-color: #ff6b6b;
     }
+    .dropdown {
+      float: left;
+      overflow: hidden;
+    }
+
+    .dropdown {
+      cursor: pointer;
+      font-size: 16px;
+      border: none;
+      outline: none;
+      color: white;
+      padding: 14px 16px;
+      background-color: inherit;
+      font-family: inherit;
+      margin: 0;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: fixed;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      top: 84px;
+      right:10px;
+    }
+
+    .dropdown-content a {
+      float: none;
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    .show {
+      display: block;
+    }
     {% block style %}
     {% endblock %}
   </style>
@@ -107,13 +151,16 @@
         </ul>
         <div class="profile-icon ms-auto">
           <div class="profile-pic-container">
-          <img src="{{ request.user.photo.url }}" class="profile-pic" alt="Profile Picture">
-          <div class="profile-pic-dropdown" id="profileDropdown">
-            <select>
-              <option value="{% url 'profile' %}">Profile</option>
-              <option value="{% url 'logout' %}">Sign Out</option>
-            </select>
-          </div>
+            <div class="dropdown">
+              <img src="{{ request.user.photo.url }}" class="dropbtn profile-pic" alt="Profile Picture" onclick="myFunction()">
+              <div class="dropdown-content" id="myDropdown">
+                <a href="{% url 'profile' %}">Profile</a>
+                {% if request.user.organizer %}
+                  <a href="{% url 'organizer_dashboard' %}">Organizer</a>
+                {% endif %}
+                <a href="{% url 'logout' %}">Sign Out</a>
+              </div>
+            </div>
         </div>
         </div>
       </div>
@@ -125,36 +172,19 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
   <script>
-    document.getElementById('profileDropdown').addEventListener('change', function(event) {
-    var selectedOption = event.target.value;
-    if (selectedOption) {
-      window.location.href = selectedOption;
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
     }
-  });
 
-  // Close the dropdown on clicking outside
-  document.addEventListener('click', function(event) {
-    var dropdown = document.getElementById('profileDropdown');
-    var targetElement = event.target; // clicked element
-
-    do {
-      if (targetElement == dropdown || targetElement.tagName === 'OPTION') {
-        // Click inside the dropdown or on an option, do nothing
-        return;
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(e) {
+      if (!e.target.matches('.dropbtn')) {
+      var myDropdown = document.getElementById("myDropdown");
+        if (myDropdown.classList.contains('show')) {
+          myDropdown.classList.remove('show');
+        }
       }
-      // Move up the DOM
-      targetElement = targetElement.parentNode;
-    } while (targetElement);
-
-    // Click outside the dropdown or option, hide it
-    dropdown.style.display = 'none';
-  });
-
-  document.querySelector('.profile-pic-container').addEventListener('click', function(event) {
-    var dropdown = document.getElementById('profileDropdown');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-    event.stopPropagation();
-  });
+    }
   </script>
 </body>
 </html>
