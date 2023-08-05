@@ -1,0 +1,214 @@
+{% extends 'content/base.html' %}
+
+{% block content %}
+
+<style>
+  /* Styles for the Home Page */
+
+  /* Main accent color */
+  .text-accent {
+    color: #ff6b6b;
+  }
+
+  /* Secondary color */
+  .text-secondary {
+    color: #574240;
+  }
+
+  /* Light gray background */
+  .bg-light-gray {
+    background-color: #f1f1f1;
+  }
+
+  /* Modern card styles */
+  .card-modern {
+    background-color: #fff;
+    border: 1px solid #574240;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    position: relative; /* For 3D effect */
+    transition: transform 0.2s ease-out; /* For 3D effect */
+  }
+
+  .card-modern:hover {
+    transform: translateY(-5px); /* For 3D effect - Move the card up on hover */
+  }
+
+  /* Badge styles */
+  .badge {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50px;
+  }
+
+  .badge-success {
+    background-color: #28a745; /* Green for "Published" */
+    color: #fff;
+  }
+
+  .badge-secondary {
+    background-color: #6c757d; /* Gray for "Draft" */
+    color: #fff;
+  }
+
+  .badge-primary {
+    background-color: #ff6b6b; /* Red for "Paid" */
+    color: #fff;
+  }
+
+  /* Card title and description styles */
+  .card-title {
+    color: #ff6b6b;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .card-text {
+    color: #574240;
+    font-size: 16px;
+  }
+
+  /* View Details button */
+  .btn-primary {
+    background-color: #ff6b6b;
+    border-color: #ff6b6b;
+  }
+
+  .btn-primary:hover {
+    background-color: #d64444;
+    border-color: #d64444;
+  }
+
+  /* Event image styles */
+  .event-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  /* Slider container */
+  .slider-container {
+    margin-bottom: 40px;
+  }
+
+  /* Category title styles */
+  .category-title {
+    color: #574240;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  <!-- ... Existing code ... -->
+
+<style>
+  /* ... Existing styles ... */
+
+  /* Discount styles */
+  .discount-container {
+    position: relative;
+    margin-top: 10px;
+  }
+
+  .discount-cutout {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #ccc;
+    font-size: 16px;
+    text-decoration: line-through;
+  }
+
+  .discount-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff6b6b;
+  }
+
+  .discount-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #ff6b6b;
+    color: #fff;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 50px;
+    font-weight: bold;
+    transform: rotate(45deg);
+  }
+</style>
+
+<div class="container my-5">
+
+  {% for category in categories_with_events %}
+  <!-- Slider for events in this category -->
+  <div class="slider-container">
+    <h2 class="category-title">{{ category.name }}</h2>
+    <div class="row">
+      {% for event in published_events %}
+      {% if event.category == category %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 card-modern">
+          {% if event.image %}
+            <img src="{{ event.image.url }}" alt="{{ event.title }}" class="event-image">
+          {% else %}
+            <img src="https://st2.depositphotos.com/1635204/7654/i/450/depositphotos_76549817-stock-photo-word-events-on-colorful-wooden.jpg" alt="{{ event.title }}" class="event-image">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title text-maroon">{{ event.title }}</h5>
+            <p class="card-text">{{ event.description|truncatewords:10| safe }}</p>
+
+            <!-- Start Date -->
+            <p class="card-text">Start Date: {{ event.start_date|date:'M d, Y' }} at {{ event.start_date|time:'H:i A' }}</p>
+
+            <!-- Event Duration -->
+            {% if not event.is_expired %}
+            <p class="card-text">
+              Duration: {{ event.event_duration.days }} days, {{ event.event_duration.hours }} hours, {{ event.event_duration.minutes }} minutes
+            </p>
+            {% endif %}
+
+            <!-- Remaining Tickets -->
+            <p class="card-text">
+              Tickets Left: {{ event.remaining_tickets }}
+            </p>
+
+            <!-- Discount information -->
+            {% if event.discount > 0 and event.is_paid_event %}
+            <div class="discount-container">
+              <span class="discount-price">${{ event.get_discounted_price|floatformat:2 }}</span>
+              <span class="discount-badge">{{ event.discount|floatformat:0 }}% OFF</span>
+            </div>
+            {% endif %}
+
+            {% if event.is_paid_event %}
+              <p class="card-text text-danger">
+                Price: {% if event.discount > 0 %}<del>${{ event.price|floatformat:2 }}</del>{% endif %}
+              </p>
+              <span class="badge badge-primary" style="background-color:red;">Paid</span>
+            {% else %}
+              <p class="badge badge-success">Free</p>
+            {% endif %}
+
+          </div>
+          <div class="card-footer" style="display: flex;justify-content: center;">
+            <a href="" class="btn btn-primary">
+              Register
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+
+
+{% endblock %}

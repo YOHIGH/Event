@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Event
+from .models import Event, Category
 from django.http import HttpResponse
 from datetime import datetime
 
@@ -37,3 +37,27 @@ def create_event(request):
     else:
         # For GET requests, render the form HTML
         return render(request, 'create_event.html')
+
+
+def created_events(request):
+    events = Event.objects.filter(organizer=request.user.organizer)
+    context = {'events': events}
+    return render(request, 'created_events.html', context)
+
+
+def event_page(request):
+    # Get all published events
+    published_events = Event.objects.filter(is_published=True)
+
+    # Get all categories
+    categories = Category.objects.all()
+
+    categories_with_events = Category.objects.filter(events__is_published=True).distinct()
+
+    context = {
+        'published_events': published_events,
+        'categories': categories,
+        'categories_with_events': categories_with_events
+    }
+
+    return render(request, 'events.html', context)

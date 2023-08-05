@@ -1,0 +1,145 @@
+{% extends 'content/base.html' %}
+
+{% block content %}
+
+<style>
+  /* Styles for the Created Events page */
+
+  /* Main accent color */
+  .text-accent {
+    color: #ff6b6b;
+  }
+
+  /* Secondary color */
+  .text-secondary {
+    color: #574240;
+  }
+
+  /* Light gray background */
+  .bg-light-gray {
+    background-color: #f1f1f1;
+  }
+
+  /* Modern card styles */
+  .card-modern {
+    background-color: #fff;
+    border: 1px solid #574240;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    position: relative; /* For 3D effect */
+    transition: transform 0.2s ease-out; /* For 3D effect */
+  }
+
+  .card-modern:hover {
+    transform: translateY(-5px); /* For 3D effect - Move the card up on hover */
+  }
+
+  /* Badge styles */
+  .badge {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50px;
+  }
+
+  .badge-success {
+    background-color: #28a745; /* Green for "Published" */
+    color: #fff;
+  }
+
+  .badge-secondary {
+    background-color: #6c757d; /* Gray for "Draft" */
+    color: #fff;
+  }
+
+  .badge-primary {
+    background-color: #ff6b6b; /* Red for "Paid" */
+    color: #fff;
+  }
+
+  /* Card title and description styles */
+  .card-title {
+    color: #ff6b6b;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .card-text {
+    color: #574240;
+    font-size: 16px;
+  }
+
+  /* View Details button */
+  .btn-primary {
+    background-color: #ff6b6b;
+    border-color: #ff6b6b;
+  }
+
+  .btn-primary:hover {
+    background-color: #d64444;
+    border-color: #d64444;
+  }
+
+  .event-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    margin-top: 10px;
+  }
+</style>
+
+<div class="container my-5">
+
+  <h1 class="text-center text-brown" style="margin-bottom: 84px;">My Created Events</h1>
+
+  <div class="row">
+
+    {% for event in events %}
+
+    <div class="col-md-4 mb-4">
+
+      <div class="card h-100 card-modern">
+
+        <div class="card-badge">
+          {% if event.is_published %}
+            <span class="badge badge-success">Published</span>
+          {% else %}
+            <span class="badge badge-secondary">Draft</span>
+          {% endif %}
+
+          {% if event.is_paid_event %}
+            <span class="badge badge-primary">Paid</span>
+          {% else %}
+            <span class="badge badge-success">Free</span>
+          {% endif %}
+        </div>
+        {% if event.image %}
+          <img src="{{ event.image.url }}" alt="{{ event.title }}" class="event-image">
+        {% else %}
+          <img src="https://st2.depositphotos.com/1635204/7654/i/450/depositphotos_76549817-stock-photo-word-events-on-colorful-wooden.jpg" alt="{{ event.title }}" class="event-image">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title text-maroon">{{ event.title }}</h5>
+          <p class="card-text">{{ event.description|truncatewords:10| safe }}</p>
+        </div>
+
+        <div class="card-footer">
+          <a href="" class="btn btn-primary">
+            View Details
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+    {% endfor %}
+
+  </div>
+
+</div>
+
+{% endblock %}

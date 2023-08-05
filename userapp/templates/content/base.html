@@ -130,7 +130,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="{% url 'events' %}">
         <!-- Add a <span> element to style the "Event" text differently -->
         <span class="brand-text">Event</span>
       </a>
@@ -148,6 +148,11 @@
           <li class="nav-item">
             <a class="nav-link" href="#">FAQ</a>
           </li>
+          {% if request.user.organizer %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'created_events' %}">Created Events</a>
+            </li>
+          {% endif %}
         </ul>
         <div class="profile-icon ms-auto">
           <div class="profile-pic-container">

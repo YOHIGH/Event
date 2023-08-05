@@ -3,6 +3,7 @@
 {% block title %}
   <title>Organizer Dashboard - Event Website</title>
 {% endblock %}
+
 {% block style %}
   <style>
     /* Custom CSS for the 3D button effect */
@@ -23,26 +24,37 @@
     .btn-3d:hover {
       transform: translateY(-4px);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 24px 48px rgba(0, 0, 0, 0.2);
-      background-color: #fff;
-      color: #ff6b6b;
+      background-color: #ff6b6b; /* Main accent color on hover */
+      color: #ffffff; /* White text on hover */
+    }
+
+    /* Custom CSS for the tag */
+    .tag {
+      background-color: #ff6b6b; /* Main accent color for the tag background */
+      color: #ffffff; /* White text for the tag */
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: 10px;
     }
   </style>
 {% endblock %}
+
 {% block content %}
   {% if organizer %}
     <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
       <div class="card border-0 rounded-lg shadow-lg" style="margin-top: -50px;">
-        <div class="card-header text-center">
+        <div class="card-header text-center" style="background-color: #ff6b6b; color: #ffffff;">
           <h1>Welcome to the Organizer Dashboard</h1>
         </div>
         <img src="{% if organizer.logo %}{{ organizer.logo.url }}{% else %}https://via.placeholder.com/200{% endif %}" alt="Organization Logo" class="card-img-top img-fluid rounded-lg" style="max-height: 300px;">
-        <div class="card-body">
-          <h2 class="text-center">{{ organizer.organization_name }}</h2>
+        <div class="card-body" style="background-color: #f1f1f1;text-align:center;">
+          <h2 class="text-center" style="color: #574240;">{{ organizer.organization_name }}</h2>
           {{ organizer.description | safe }}
           <p class="text-center">Address: {{ organizer.address }}</p>
           <div class="tag text-center rounded-pill">{{ organizer.organization_type }}</div>
           <div class="text-center mt-3">
-            <a href="{% url 'create_event' %}" class="btn btn-lg btn-3d">Create Event</a>
+            <a href="{% url 'create_event' %}" class="btn btn-lg btn-3d" style="border: 2px solid #574240;">Create Event</a>
           </div>
         </div>
       </div>
