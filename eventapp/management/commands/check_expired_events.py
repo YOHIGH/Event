@@ -14,6 +14,7 @@ class Command(BaseCommand):
         expired_events = Event.objects.filter(end_date__lt=now)
         for event in expired_events:
             event.is_expired = True
+            event.is_published = False
             event.save()
             self.log_expired_event(event, now)
         self.stdout.write(self.style.SUCCESS('Successfully updated is_expired for expired events.'))

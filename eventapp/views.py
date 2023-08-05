@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .models import Event, Category
 from django.http import HttpResponse
 from datetime import datetime
+import stripe
+from django.conf import settings
+from django.urls import reverse
 
 
 def create_event(request):
@@ -17,7 +20,7 @@ def create_event(request):
         is_paid_event = 'is_paid_event' in request.POST
         is_published = 'is_published' in request.POST
         if is_paid_event:
-            discount = float(request.POST['discount'])
+            discount = float(request.POST['discount']) if request.POST['discount'] else 0
             price = float(request.POST['price'])
             event_obj.is_paid_event = is_paid_event
             event_obj.discount = discount
@@ -61,3 +64,40 @@ def event_page(request):
     }
 
     return render(request, 'events.html', context)
+
+
+def payment_success(request):
+    event_id = request.GET.get('event_id')
+    event_obj = Event.objects.get(id=event_id)
+    user = request.user
+    event_obj.attendees.add(user)
+    return HttpResponse("Payment Successfull")
+
+
+def payment_failed(request):
+    return HttpResponse("Payment Failed")
+
+
+def checkout_session(request):
+    user = request.user
+    stripe.api_key = settings.STRIPE_API_KEY
+    event = request.GET.get('event', 'Default')
+    amount = int(float(request.GET.get('amount')) * 100)
+    product = stripe.Product.create(name=event)
+
+    price = stripe.Price.create(
+        product=product['id'],
+        unit_amount=amount,
+        currency='usd'
+    )
+    success_url = request.build_absolute_uri(reverse('payment_success'))
+    cancel_url = request.build_absolute_uri(reverse('payment_failed'))
+    session = stripe.checkout.Session.create(
+        line_items=[{'price': price['id'], 'quantity':1}],
+        payment_method_types=['card'],
+        mode='payment',
+        success_url=f"{success_url}?event_id={request.GET.get('id')}",
+        cancel_url=cancel_url,
+        )
+
+    return redirect(session.url)

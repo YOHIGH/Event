@@ -100,3 +100,9 @@ class Event(models.Model):
         else:
             return self.price
 
+    def already_registerd(self, request):
+        if request in Event.objects.get(id=self.id).attendees.all():
+            return T
+            rue
+        else:
+            return False

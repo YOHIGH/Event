@@ -229,3 +229,5 @@ LOGGING = {
         },
     },
 }
+
+STRIPE_API_KEY = "sk_test_51Nb6L7JCBjtzeRPVDt1bJVHHRxJOnOlOraP4II7m8Not850a2ohVpJtqMcuAONaq85WHmPAmanK5yeAhjZeMieoU00vjs5xQcj"

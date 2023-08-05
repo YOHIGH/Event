@@ -187,7 +187,11 @@
 
             {% if event.is_paid_event %}
               <p class="card-text text-danger">
-                Price: {% if event.discount > 0 %}<del>${{ event.price|floatformat:2 }}</del>{% endif %}
+                {% if event.discount > 0 %}
+                  Price: <del>${{ event.price|floatformat:2 }}</del>
+                {% else %}
+                  Price: ${{ event.price|floatformat:2 }}
+                {% endif %}
               </p>
               <span class="badge badge-primary" style="background-color:red;">Paid</span>
             {% else %}
@@ -196,7 +200,8 @@
 
           </div>
           <div class="card-footer" style="display: flex;justify-content: center;">
-            <a href="" class="btn btn-primary">
+            <a {% if event.is_paid_event %} href="/event/create-checkout/?id={{ event.id }}&event={{ event.title }}&amount={{ event.get_discounted_price }}"
+               {% else %} href="" {% endif %} id="{{ event.id }}" class="btn btn-primary">
               Register
             </a>
           </div>
