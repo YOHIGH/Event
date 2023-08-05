@@ -99,9 +99,3 @@ class Event(models.Model):
             return discounted_price
         else:
             return self.price
-
-    def already_registerd(self, request):
-        if request in Event.objects.get(id=self.id).attendees.all():
-            return True
-        else:
-            return False

@@ -1,5 +1,5 @@
 {% extends 'content/base.html' %}
-
+{% load event_extras %}
 {% block content %}
 
 <style>
@@ -200,10 +200,19 @@
 
           </div>
           <div class="card-footer" style="display: flex;justify-content: center;">
-            <a {% if event.is_paid_event %} href="/event/create-checkout/?id={{ event.id }}&event={{ event.title }}&amount={{ event.get_discounted_price }}"
-               {% else %} href="" {% endif %} id="{{ event.id }}" class="btn btn-primary">
-              Register
-            </a>
+            {% if event|is_registered:user %}
+              <a id="{{ event.id }}" class="btn btn-primary">
+                View Details
+              </a>
+            {% elif event.is_paid_event %}
+              <a href="/event/create-checkout/?id={{ event.id }}&event={{ event.title }}&amount={{ event.get_discounted_price }}" id="{{ event.id }}" class="btn btn-primary">
+                Register
+              </a>
+            {% else %}
+              <a id="{{ event.id }}" class="btn btn-primary">
+                Register
+              </a>
+            {% endif %}
           </div>
         </div>
       </div>
