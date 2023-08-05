@@ -102,7 +102,6 @@ class Event(models.Model):
 
     def already_registerd(self, request):
         if request in Event.objects.get(id=self.id).attendees.all():
-            return T
-            rue
+            return True
         else:
             return False
