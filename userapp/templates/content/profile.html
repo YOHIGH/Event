@@ -81,47 +81,94 @@
           <div class="text-center mb-3">
             <img src="{{ request.user.photo.url }}" class="rounded-square" alt="Profile Picture" style="width: 150px; height: 150px;">
           </div>
-          <div class="mb-3 fields">
-            <strong>Email</strong>
-            <input type="email" name="email" value="{{ request.user.email }}" disabled>
-          </div>
-          <div class="mb-3 fields">
-            <strong>Phone Number</strong>
-            <input type="text" name="phone_number" value="{{ request.user.phone_number|default:'N/A' }}">
-          </div>
-          <div class="mb-3 fields">
-            <strong>Address</strong>
-            <input type="text" name="address" value="{{ request.user.address|default:'N/A' }}">
-          </div>
-          <div class="mb-3 fields">
-            <strong>Date of Birth:</strong>
-            <input type="date" name="date_of_birth" min="1990-01-01" max="2022-12-30">
-          </div>
-          <div class="mb-3 fields">
-            <label class="gender-label"><strong>Gender:</strong></label>
-            <select name="gender">
-              {% for choice in user.GENDER_CHOICES %}
-                <option value="{{ choice.0 }}" {% if choice.0 == request.user.gender %} selected {% endif %}>
-                  {{ choice.1 }}
-                </option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="mb-3 fields">
-            <strong>Country</strong>
-            <input type="text" id="country" name="country" value="{{ request.user.country|default:'N/A' }}">
-          </div>
-          <div class="mb-3 fields">
-            <strong>City</strong>
-            <input type="text" name="city" value="{{ request.user.city|default:'N/A' }}">
-          </div>
-          <div class="mb-3 fields">
-            <strong>State</strong>
-            <input type="text" name="state" value="{{ request.user.state|default:'N/A' }}">
-          </div>
+          <form id="profile-update-form" method="patch" action="{% url 'profile_details' %}">
+            {% csrf_token %}
+            <div class="mb-3 fields">
+              <strong>Email</strong>
+              <input type="email" name="email" value="{{ request.user.email }}">
+            </div>
+            <div class="mb-3 fields">
+              <strong>Phone Number</strong>
+              <input type="text" name="phone_number" value="{{ request.user.phone_number|default:'N/A' }}">
+            </div>
+            <div class="mb-3 fields">
+              <strong>Address</strong>
+              <input type="text" name="address" value="{{ request.user.address|default:'N/A' }}">
+            </div>
+            <div class="mb-3 fields">
+              <strong>Date of Birth:</strong>
+              <input type="date" name="date_of_birth" min="1990-01-01" max="2022-12-30">
+            </div>
+            <div class="mb-3 fields">
+              <label class="gender-label"><strong>Gender:</strong></label>
+              <select name="gender">
+                {% for choice in user.GENDER_CHOICES %}
+                  <option value="{{ choice.0 }}" {% if choice.0 == request.user.gender %} selected {% endif %}>
+                    {{ choice.1 }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3 fields">
+              <strong>Country</strong>
+              <input type="text" id="country" name="country" value="{{ request.user.country|default:'N/A' }}">
+            </div>
+            <div class="mb-3 fields">
+              <strong>City</strong>
+              <input type="text" name="city" value="{{ request.user.city|default:'N/A' }}">
+            </div>
+            <div class="mb-3 fields">
+              <strong>State</strong>
+              <input type="text" name="state" value="{{ request.user.state|default:'N/A' }}">
+            </div>
+            <button class="btn btn-dark" type="submit">Update Profile</button>
+          </form>
         </div>
       </div>
     </div>
   </div>
 </div>
+<script>
+$(document).ready(function() {
+
+  $('#profile-update-form').on('submit', function(e) {
+
+    e.preventDefault();
+    const formData = new URLSearchParams($(this).serialize());
+    const jsonData = {};
+    for (const pair of formData.entries()) {
+      const key = pair[0];
+      const value = decodeURIComponent(pair[1]);
+
+      if (value !== 'N/A' && value !== '') {
+        jsonData[key] = value;
+      }
+    }
+    $.ajax({
+      type: 'PATCH',
+      url: '{% url "profile_details" %}',
+      data: JSON.stringify(jsonData),
+      contentType: "application/json",
+      headers: {
+        "X-CSRFToken": $("input[name=csrfmiddlewaretoken]").val(),
+      },
+      success: function(response) {
+
+        // Handle success response
+        console.log(response);
+        alert('Profile updated!');
+
+      },
+      error: function(xhr) {
+
+        // Handle error response
+        console.log(xhr.responseText);
+        alert('Error updating profile');
+      }
+    });
+
+  });
+
+});
+</script>
 {% endblock %}

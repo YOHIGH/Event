@@ -141,6 +141,7 @@
     transform: rotate(45deg);
   }
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 <div class="container my-5">
 
@@ -197,7 +198,9 @@
             {% else %}
               <p class="badge badge-success">Free</p>
             {% endif %}
-
+            <div class="heart-icon" id="heart-icon" style="">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            </div>
           </div>
           <div class="card-footer" style="display: flex;justify-content: center;">
             {% if event|is_registered:user %}
@@ -209,7 +212,7 @@
                 Register
               </a>
             {% else %}
-              <a id="{{ event.id }}" class="btn btn-primary">
+              <a href="/event/payment-success/?event_id={{ event.id }}" id="{{ event.id }}" class="btn btn-primary">
                 Register
               </a>
             {% endif %}
@@ -224,5 +227,18 @@
 
 </div>
 
-
+<script>
+  $('#heart-icon').click(function(){
+    if ($('#heart-icon').children()[0].getAttribute('fill') == 'white'){
+      $('#heart-icon').children()[0].setAttribute('fill', 'red')
+    }else{
+     $('#heart-icon').children()[0].setAttribute('fill', 'white')
+    }
+    if ($('#heart-icon').children()[0].getAttribute('stroke') == 'black'){
+      $('#heart-icon').children()[0].setAttribute('stroke', 'red')
+    }else{
+      $('#heart-icon').children()[0].setAttribute('stroke', 'black')
+    }
+  })
+</script>
 {% endblock %}

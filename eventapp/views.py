@@ -5,6 +5,9 @@ from datetime import datetime
 import stripe
 from django.conf import settings
 from django.urls import reverse
+from django.http import JsonResponse
+import json
+from .helpers import send_email_user
 
 
 def create_event(request):
@@ -37,8 +40,37 @@ def create_event(request):
         event_obj.save()
         return HttpResponse(f"Your {event_obj.title} Event created successfully.")
 
+    elif request.method == 'PATCH':
+        try:
+            data = json.loads(request.body)
+            event_id = data.get('event_id')
+            if event_id:
+                event_obj = Event.objects.get(pk=event_id)
+                organizer = request.user.organizer
+                event_obj.organizer = organizer
+
+                for attribute in ['title', 'description', 'start_date', 'end_date', 'location', 'capacity']:
+                    value = data.get(attribute)
+                    if value is not None:
+                        setattr(event_obj, attribute, value)
+
+                is_paid_event = data.get('is_paid_event', False)
+                if is_paid_event:
+                    event_obj.is_paid_event = is_paid_event
+                    event_obj.discount = data.get('discount', 0)
+                    event_obj.price = data.get('price', 0)
+
+                event_obj.is_published = data.get('is_published', False)
+                event_obj.save()
+
+                return JsonResponse({'message': 'Event updated successfully.'}, status=200)
+            else:
+                return JsonResponse({'message': 'Invalid event_id.'}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'message': 'Invalid JSON data.'}, status=400)
+        except Event.DoesNotExist:
+            return JsonResponse({'message': 'Event does not exist.'}, status=404)
     else:
-        # For GET requests, render the form HTML
         return render(request, 'create_event.html')
 
 
@@ -71,10 +103,24 @@ def payment_success(request):
     event_obj = Event.objects.get(id=event_id)
     user = request.user
     event_obj.attendees.add(user)
+    subject = f"{event_obj.title} Registerd Successfully"
+    reciver_mail = user.email
+    body = f"""
+            <p>Hello {user.first_name}</p>
+            <p>      Event Date&Time:{event_obj.start_date} </p> 
+        """
+    send_email_user(reciver_mail, subject, body)
     return HttpResponse("Payment Successfull")
 
 
 def payment_failed(request):
+    subject = f"Registerd Failed"
+    reciver_mail = request.user.email
+    body = f"""
+                <p>Hello {request.user.first_name}</p>
+                <p>      Payment Failed </p> 
+            """
+    send_email_user(reciver_mail, subject, body)
     return HttpResponse("Payment Failed")
 
 

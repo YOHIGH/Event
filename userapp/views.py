@@ -60,3 +60,28 @@ def home(request):
     if request.user.is_authenticated:
         return redirect('user/profile')
     return redirect('user/login')
+
+
+def profile_details(request):
+    user = request.user
+
+    if request.method == 'PATCH':
+        try:
+            data = json.loads(request.body)
+
+            attributes_to_update = ['email', 'phone_number', 'address', 'date_of_birth', 'gender', 'country', 'city', 'state']
+
+            for attribute in attributes_to_update:
+                value = data.get(attribute)
+                if value is not None:
+                    setattr(user, attribute, value)
+
+            if any(data.get(attribute) is not None for attribute in attributes_to_update):
+                user.save()
+
+            return JsonResponse({'message': 'Profile details updated successfully.'}, status=200)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'message': 'Invalid JSON data.'}, status=400)
+
+    return render(request, 'profiles/profile_details.html', {'user': user})

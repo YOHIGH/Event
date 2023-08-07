@@ -10,5 +10,6 @@ urlpatterns = [
     path('login/', views.login_user, name='login_user'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/user/login/'), name='logout'),
     path('profile/', views.profile, name='profile'),
+    path('profile-update/', views.profile_details, name='profile_details'),
     # Add other URL patterns for your app if needed
 ]
