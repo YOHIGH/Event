@@ -1,0 +1,89 @@
+{% extends 'content/base.html' %}
+{% block content %}
+<style>
+  /* Badge styles */
+  .badge {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50px;
+  }
+
+  .badge-success {
+    background-color: #28a745; /* Green for "Published" */
+    color: #fff;
+  }
+
+  .badge-secondary {
+    background-color: #6c757d; /* Gray for "Draft" */
+    color: #fff;
+  }
+
+  .badge-primary {
+    background-color: #ff6b6b; /* Red for "Paid" */
+    color: #fff;
+  }
+
+</style>
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card card-modern">
+        <div class="card-header text-center">
+          <h4 class="card-title text-maroon">{{ event.organizer }}</h4>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title text-maroon">{{ event.title }}</h2>
+          <span class="badge badge-pill badge-secondary">{{ event.category }}</span>
+          <p class="card-text">{{ event.description|safe }}</p>
+          <p class="card-text">Start Date: {{ event.start_date|date:'M d, Y' }} at {{ event.start_date|time:'H:i A' }}</p>
+          <p class="card-text">End Date: {{ event.end_date|date:'M d, Y' }} at {{ event.end_date|time:'H:i A' }}</p>
+          <p class="card-text">Location: {{ event.location }}</p>
+          <p class="card-text">Capacity: {{ event.capacity }}</p>
+          {% if event.is_paid_event %}
+            <p class="card-text">Price: {% if event.discount > 0 %}<del>${{ event.price|floatformat:2 }}</del> (Discounted: ${{ event.get_discounted_price|floatformat:2 }}){% else %}${{ event.price|floatformat:2 }}{% endif %}</p>
+          {% endif %}
+          <p class="card-text">Remaining Tickets: {{ event.remaining_tickets }}</p>
+        </div>
+        <div class="card-footer text-center">
+          <h5 class="card-title text-accent">Time Left to Start</h5>
+          <div id="countdown" class="countdown-timer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    const startDate = new Date('{{ event.start_date|date:"c" }}');
+    const now = new Date();
+    const timeLeft = startDate - now;
+
+    if (timeLeft > 0) {
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+      countdownElement.innerHTML = `
+        <div class="timer">
+          <span class="time">${days}</span> days
+          <span class="time">${hours}</span> hours
+          <span class="time">${minutes}</span> minutes
+          <span class="time">${seconds}</span> seconds
+        </div>`;
+    } else {
+      countdownElement.innerHTML = '<p class="event-started">Event has started!</p>';
+    }
+  }
+
+  // Update countdown every second
+  setInterval(updateCountdown, 1000);
+
+  // Initial call to update countdown on page load
+  updateCountdown();
+</script>
+
+{% endblock %}

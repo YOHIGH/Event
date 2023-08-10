@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from .models import Event, Category
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Event, Category, Interested
 from django.http import HttpResponse
 from datetime import datetime
 import stripe
@@ -8,6 +8,8 @@ from django.urls import reverse
 from django.http import JsonResponse
 import json
 from .helpers import send_email_user
+from django.contrib.auth.decorators import login_required
+
 
 
 def create_event(request):
@@ -147,3 +149,38 @@ def checkout_session(request):
         )
 
     return redirect(session.url)
+
+
+def toggle_interest(request):
+    event_id = request.GET.get('event_id')
+    user = request.user
+    interested_obj, interest_created = Interested.objects.get_or_create(user=user, event_id=event_id)
+    if not interest_created:
+        interested_obj.delete()
+
+    return JsonResponse({'message': 'Success'})
+
+
+def event_detail(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+
+    context = {
+        'event': event,
+    }
+
+    return render(request, 'event_detail.html', context)
+
+
+@login_required
+def interested_events(request):
+    user = request.user
+    interested_event_ids = Interested.objects.filter(user=user).values_list('event_id', flat=True)
+    interested_events = Event.objects.filter(id__in=interested_event_ids)
+    categories_with_events = Category.objects.filter(events__id__in=interested_event_ids).distinct()
+
+    context = {
+        'interested_events': interested_events,
+        'categories_with_events': categories_with_events,
+    }
+
+    return render(request, 'interested_events.html', context)

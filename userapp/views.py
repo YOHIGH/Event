@@ -84,4 +84,4 @@ def profile_details(request):
         except json.JSONDecodeError:
             return JsonResponse({'message': 'Invalid JSON data.'}, status=400)
 
-    return render(request, 'profiles/profile_details.html', {'user': user})
+    return render(request, 'content/profile.html', {'user': user})

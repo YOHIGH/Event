@@ -198,13 +198,13 @@
             {% else %}
               <p class="badge badge-success">Free</p>
             {% endif %}
-            <div class="heart-icon" id="heart-icon" style="">
+            <div class="heart-icon" data-event-id="{{ event.id }}" style="text-align: right;">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
             </div>
           </div>
           <div class="card-footer" style="display: flex;justify-content: center;">
             {% if event|is_registered:user %}
-              <a id="{{ event.id }}" class="btn btn-primary">
+              <a id="{{ event.id }}" href="{% url 'event_detail' event.id %}" class="btn btn-primary">
                 View Details
               </a>
             {% elif event.is_paid_event %}
@@ -228,17 +228,27 @@
 </div>
 
 <script>
-  $('#heart-icon').click(function(){
-    if ($('#heart-icon').children()[0].getAttribute('fill') == 'white'){
-      $('#heart-icon').children()[0].setAttribute('fill', 'red')
-    }else{
-     $('#heart-icon').children()[0].setAttribute('fill', 'white')
-    }
-    if ($('#heart-icon').children()[0].getAttribute('stroke') == 'black'){
-      $('#heart-icon').children()[0].setAttribute('stroke', 'red')
-    }else{
-      $('#heart-icon').children()[0].setAttribute('stroke', 'black')
-    }
-  })
+  $('.heart-icon').click(function(){
+    debugger;
+    var heartIcon = $(this);
+    var eventID = heartIcon.data('event-id');
+
+    $.ajax({
+      url: '{% url "toggle_interest" %}',
+      data: {'event_id': eventID},
+      success: function(data) {
+        if (heartIcon.children()[0].getAttribute('fill') == 'white') {
+          heartIcon.children()[0].setAttribute('fill', 'red');
+        } else {
+          heartIcon.children()[0].setAttribute('fill', 'white');
+        }
+        if (heartIcon.children()[0].getAttribute('stroke') == 'black') {
+          heartIcon.children()[0].setAttribute('stroke', 'red');
+        } else {
+          heartIcon.children()[0].setAttribute('stroke', 'black');
+        }
+      }
+    });
+  });
 </script>
 {% endblock %}

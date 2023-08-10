@@ -99,3 +99,11 @@ class Event(models.Model):
             return discounted_price
         else:
             return self.price
+
+
+class Interested(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='interested')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='interested')
+
+    def __str__(self):
+        return self.user.username
