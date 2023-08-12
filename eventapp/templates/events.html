@@ -161,6 +161,7 @@
           {% endif %}
           <div class="card-body">
             <h5 class="card-title text-maroon">{{ event.title }}</h5>
+            <h5 class="card-title text-maroon" id="event-id">{{ event.id }}</h5>
             <p class="card-text">{{ event.description|truncatewords:10| safe }}</p>
 
             <!-- Start Date -->
@@ -235,7 +236,7 @@
     heartIcon.children()[0].setAttribute('fill', fillColor);
 
     function toggleHeartColors() {
-
+      var event_id = document.getElementById('event-id').textContent;
       var currentFillColor = heartIcon.children()[0].getAttribute('fill');
       var newFillColor = currentFillColor === 'white' ? 'red' : 'white';
 
@@ -244,7 +245,7 @@
 
       $.ajax({
         url: '{% url "toggle_interest" %}',
-        data: {'event_id': 'event1'}, 
+        data: {'event_id': event_id}, 
         success: function(data) {
         }
       });
