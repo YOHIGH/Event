@@ -151,7 +151,7 @@ MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
 # Absolute filesystem path to the directory where static files will be collected.
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 LOGIN_REDIRECT_URL = '/user/profile'
 LOGIN_URL = '/user/login/'
