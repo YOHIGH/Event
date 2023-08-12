@@ -152,6 +152,7 @@ def checkout_session(request):
 
 
 def toggle_interest(request):
+    # import pdb; pdb.set_trace()
     event_id = request.GET.get('event_id')
     user = request.user
     interested_obj, interest_created = Interested.objects.get_or_create(user=user, event_id=event_id)

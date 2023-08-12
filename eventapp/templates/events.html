@@ -228,26 +228,30 @@
 </div>
 
 <script>
-  $('.heart-icon').click(function(){
-    debugger;
-    var heartIcon = $(this);
-    var eventID = heartIcon.data('event-id');
+  $(document).ready(function() {
+    var heartIcon = $('.heart-icon').first();
+    var previousState = localStorage.getItem('heartIconColor');
+    var fillColor = previousState === 'red' ? 'red' : 'white';    
+    heartIcon.children()[0].setAttribute('fill', fillColor);
 
-    $.ajax({
-      url: '{% url "toggle_interest" %}',
-      data: {'event_id': eventID},
-      success: function(data) {
-        if (heartIcon.children()[0].getAttribute('fill') == 'white') {
-          heartIcon.children()[0].setAttribute('fill', 'red');
-        } else {
-          heartIcon.children()[0].setAttribute('fill', 'white');
+    function toggleHeartColors() {
+
+      var currentFillColor = heartIcon.children()[0].getAttribute('fill');
+      var newFillColor = currentFillColor === 'white' ? 'red' : 'white';
+
+      heartIcon.children()[0].setAttribute('fill', newFillColor);
+      localStorage.setItem('heartIconColor', newFillColor);
+
+      $.ajax({
+        url: '{% url "toggle_interest" %}',
+        data: {'event_id': 'event1'}, 
+        success: function(data) {
         }
-        if (heartIcon.children()[0].getAttribute('stroke') == 'black') {
-          heartIcon.children()[0].setAttribute('stroke', 'red');
-        } else {
-          heartIcon.children()[0].setAttribute('stroke', 'black');
-        }
-      }
+      });
+    }
+
+    heartIcon.click(function() {
+      toggleHeartColors();
     });
   });
 </script>
