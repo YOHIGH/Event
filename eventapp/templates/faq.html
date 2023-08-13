@@ -1,0 +1,74 @@
+{% extends 'content/base.html' %}
+
+{% block content %}
+<style>
+    /* Additional styles specific to the FAQ page */
+
+    .faq-container h1 {
+        text-align: center;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+    h1 {
+        color: #ff6b6b;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        color: #574240;
+        margin-bottom: 20px;
+    }
+
+    .faq-item {
+        border-bottom: 1px solid #e0e0e0;
+        padding-bottom: 20px;
+        margin-bottom: 40px;
+    }
+
+    h3 {
+        color: #ff6b6b;
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #574240;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+</style>
+
+<div class="faq-container">
+    <h1>Frequently Asked Questions</h1>
+
+    <div class="container">
+
+        <div class="faq-item">
+            <h3>1. How do I register for an event?</h3>
+            <p>To register for an event, navigate to the EVENT page and click the "Register" button. You will need to provide your any required details for the event.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>2. Can I register multiple attendees for an event?</h3>
+            <p>Yes, you can register multiple attendees for an event. During the registration process, you will have the option to add additional attendees and provide their information. Please note that currently, only the user themselves can register others. However, we are actively working on expanding this feature in the near future.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>3. How can I view my registered events?</h3>
+            <p>After logging into your account, you can access the "Registered" section. This section will display a list of events you have registered for along with their details.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>4. What payment methods are accepted for paid events?</h3>
+            <p>We accept credit card payments for paid events. During the registration process, you will be prompted to enter your payment details securely.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>5. Can I cancel my event registration?</h3>
+            <p>Yes, you can cancel your event registration. To do so, log into your account, navigate to the "Registered" section, and select the event you wish to cancel. Follow the provided instructions to cancel your registration.</p>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
