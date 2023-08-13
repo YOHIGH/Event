@@ -1,5 +1,43 @@
 {% extends 'content/base.html' %}
 {% block content %}
+<style>
+    .slider-container {
+        margin-bottom: 50px;
+    }
+
+    .category-title {
+        color: #ff6b6b;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .btn-primary,
+    .btn-cancel {
+        border: none;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-primary {
+        background-color: #ff6b6b;
+        color: #fff;
+    }
+
+    .btn-cancel {
+        background-color: #d64444;
+        color: #fff;
+    }
+
+    .btn-primary:hover,
+    .btn-cancel:hover {
+        background-color: #ffffff;
+        color: #ff6b6b;
+    }
+
+</style>
 
 <div class="container my-5">
 
@@ -20,10 +58,15 @@
             <h5 class="card-title text-maroon">{{ event.title }}</h5>
             <p class="card-text">{{ event.description|truncatewords:10| safe }}</p>
           </div>
-          <div class="card-footer" style="display: flex;justify-content: center;">
+          <div class="card-footer" style="display: flex; justify-content: {% if request.GET.page == 'register' %}space-between{% else %}center{% endif %};">
             <a id="{{ event.id }}" href="{% url 'event_detail' event.id %}" class="btn btn-primary">
               View Details
             </a>
+            {% if request.GET.page == 'register' %}
+            <a data-event-id="{{ event.id }}" class="btn btn-cancel">
+              Cancel
+            </a>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -34,5 +77,52 @@
   {% endfor %}
 
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const cancelButtons = document.querySelectorAll(".btn-cancel");
+
+  cancelButtons.forEach(cancelButton => {
+    cancelButton.addEventListener("click", function(event) {
+      event.preventDefault();
+      const eventId = this.getAttribute("data-event-id");
+      const jsonData = {
+        event_id: eventId
+      };
+
+      try {
+        $.ajax({
+          type: "POST",
+          url: `/event/cancel_event/${eventId}/`,  // Make sure the URL is correctly constructed
+          data: JSON.stringify(jsonData),
+          contentType: "application/json",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+          success: function(data) {
+            if (data.success) {
+              const cardModern = cancelButton.closest(".card-modern");
+              const sliderContainer = cardModern.closest(".slider-container");
+
+              cardModern.remove();
+              if (!sliderContainer.querySelector(".card-modern")) {
+                const categoryTitle = sliderContainer.querySelector(".category-title");
+                if (categoryTitle) {
+                  categoryTitle.closest(".slider-container").remove();
+                }
+              }
+            }
+          },
+          error: function(xhr, status, error) {
+            console.error("Cancellation failed:", xhr.responseText);
+          }
+        });
+      } catch (error) {
+        console.error("Cancellation failed:", error);
+      }
+    });
+  });
+});
+
+</script>
 
 {% endblock %}

@@ -143,10 +143,10 @@
             <a class="nav-link" href="{% url 'interested_events' %}">Interested</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Registered</a>
+            <a class="nav-link" href="{% url 'interested_events' %}?page=register">Registered</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">FAQ</a>
+            <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
           </li>
           {% if request.user.organizer %}
             <li class="nav-item">

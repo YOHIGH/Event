@@ -11,7 +11,6 @@ from .helpers import send_email_user
 from django.contrib.auth.decorators import login_required
 
 
-
 def create_event(request):
     if request.method == 'POST':
         event_obj = Event()
@@ -174,9 +173,14 @@ def event_detail(request, event_id):
 @login_required
 def interested_events(request):
     user = request.user
-    interested_event_ids = Interested.objects.filter(user=user).values_list('event_id', flat=True)
-    interested_events = Event.objects.filter(id__in=interested_event_ids)
-    categories_with_events = Category.objects.filter(events__id__in=interested_event_ids).distinct()
+    if request.GET.get('page') == 'register':
+        interested_events = Event.objects.filter(attendees=user)
+        categories_with_events = Category.objects.filter(events__in=interested_events)
+
+    else:
+        interested_event_ids = Interested.objects.filter(user=user).values_list('event_id', flat=True)
+        interested_events = Event.objects.filter(id__in=interested_event_ids)
+        categories_with_events = Category.objects.filter(events__id__in=interested_event_ids).distinct()
 
     context = {
         'interested_events': interested_events,
@@ -184,3 +188,57 @@ def interested_events(request):
     }
 
     return render(request, 'interested_events.html', context)
+
+
+@login_required
+def cancel_event(request, event_id):
+    if request.method == "POST":
+        user = request.user
+        try:
+            event = Event.objects.get(id=event_id)
+            if user in event.attendees.all():
+                event.attendees.remove(user)
+                return JsonResponse({"success": True})
+            else:
+                return JsonResponse({"success": False, "error": "User not registered for the event"})
+        except Event.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Event not found"})
+
+    return JsonResponse({"success": False, "error": "Invalid request"})
+
+
+def edit_event(request, event_id):
+    event = Event.objects.get(id=event_id)
+    categories = Category.objects.all()
+
+    if request.method == 'PATCH':
+        data = json.loads(request.body)
+
+        event.title = data.get('title', event.title)
+        event.description = data.get('description', event.description)
+
+        start_date = data.get('start_date')
+        if start_date:
+            event.start_date = datetime.astimezone(datetime.fromisoformat(start_date))
+
+        end_date = data.get('end_date')
+        if end_date:
+            event.end_date = datetime.astimezone(datetime.fromisoformat(end_date))
+        event.location = data.get('location', event.location)
+        event.capacity = data.get('capacity', event.capacity)
+        price = data.get('price') if data.get('price') else event.price
+        event.price = price if price else 0
+        event.is_paid_event = True if data.get('is_paid_event') else False
+        event.discount = float(data.get('discount', event.discount))
+        event.category_id = data.get('category', event.category_id)
+        event.is_published = True if data.get('is_published') else False
+        event.save()
+
+        return JsonResponse({'success': True})
+
+    context = {
+        'event': event,
+        'categories': categories,
+    }
+
+    return render(request, 'edit_event.html', context)
